@@ -299,8 +299,8 @@ class ChatBedrockConverse(BaseChatModel):
     region_name: Optional[str] = None
     """The aws region, e.g., `us-west-2`. 
     
-    Falls back to AWS_DEFAULT_REGION env variable or region specified in ~/.aws/config 
-    in case it is not provided here.
+    Falls back to AWS_REGION or AWS_DEFAULT_REGION env variable or region specified in 
+    ~/.aws/config in case it is not provided here.
     """
 
     credentials_profile_name: Optional[str] = Field(default=None, exclude=True)
@@ -464,6 +464,7 @@ class ChatBedrockConverse(BaseChatModel):
 
                 self.region_name = (
                     self.region_name
+                    or os.getenv("AWS_REGION")
                     or os.getenv("AWS_DEFAULT_REGION")
                     or session.region_name
                 )
